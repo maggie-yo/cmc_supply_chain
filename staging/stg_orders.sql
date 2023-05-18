@@ -1,15 +1,8 @@
 SELECT
-type,
-supplier,
-MaterialNumber as material_number,
-case
-  when supplier = "INJ001" then "cartridge"
-  when supplier in ("INJ002", "INJ003") then "pens"
-  when supplier = "OR001" then "tablets"
-  when supplier = "OR002" then "duma"
-  else "unknown"
-  end as measure_unit,
-platform,
-MaterialResponsible as material_responsible
+  Date as order_date,
+  date_add(date, interval 1 month) as order_delivery_date,
+  batchsize as batch_size,
+  NumBatches as num_batches,
+  MaterialNumber as material_number
 FROM
-  `maggies-sandbox.novo_case.materials`
+  `maggies-sandbox.novo_case.orders`
