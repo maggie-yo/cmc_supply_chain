@@ -20,7 +20,6 @@ SELECT
     D.day,
     d.material_number,
 SUM(acc_demand_qqt) as acc_demand
-
 FROM daterange AS D
 INNER JOIN base AS B 
     ON D.day >= B.demand_deadline 
