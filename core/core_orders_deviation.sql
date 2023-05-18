@@ -29,6 +29,3 @@ left join
 where
 -- to find orders where the batch sizes exceed the maximum capacity of produced batches from a supplier
 o.batch_size > s.supplier_batch_size
-
--- ensuring we always place orders with a positive quantity
--- and o.batch_size <= 0
