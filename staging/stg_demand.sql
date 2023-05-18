@@ -1,3 +1,4 @@
+WITH demands AS (
 SELECT
   Date as demand_deadline,
   Demand as demand_qqt,
@@ -19,3 +20,22 @@ FROM `maggies-sandbox.novo_case.core_orders` AS O
 INNER JOIN `maggies-sandbox.novo_case.stg_link` AS L
   ON o.material_number=L.material_number_ass
 WHERE type ='Assembly'
+
+),
+min_order AS (
+SELECT
+  material_number,
+  MIN(order_delivery_date) AS min_order_delivery_date
+FROM
+  `maggies-sandbox.novo_case.stg_orders`
+GROUP BY
+  material_number
+)
+
+SELECT 
+  demands.*,
+FROM demands 
+LEFT JOIN min_order
+  USING(material_number)
+-- assuming that if a demand is created before the min order delivery date it's a DQ issue
+WHERE demand_deadline > min_order_delivery_date
